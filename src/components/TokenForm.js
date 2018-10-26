@@ -1,22 +1,10 @@
 import React from 'react'
-import { FormGroup, ControlLabel, FormControl } from 'react-bootstrap'
-
-import web3 from '../services/web3'
+import { FormGroup, ControlLabel, FormControl, Button, InputGroup } from 'react-bootstrap'
 
 class TokenForm extends React.Component {
 
     state = {
         value: '',
-        account: ''
-    }
-
-    async componentDidMount() {
-        console.log("before");
-        const accounts = await web3.eth.getAccounts()
-        console.log("after");
-        console.log(accounts);
-        
-        this.setState({ account: accounts[0] })
     }
 
     handleChange = (e) => {
@@ -24,23 +12,35 @@ class TokenForm extends React.Component {
         this.setState({ value })
     }
 
+    handleSubmit = async (e) => {
+        e.preventDefault()
+        const { value } = this.state
+        this.props.onSubmit(value)
+    }
+
     render() {
+        const { isLoading } = this.props
 
         return (
-            <form>
-                <FormGroup
-                    controlId="formBasicText"
-                    validationState={"success"}
-                >
-                    <ControlLabel>Please enter your account</ControlLabel>
-                    <FormControl
-                        type="text"
-                        value={this.state.value}
-                        placeholder="Enter text"
-                        onChange={this.handleChange}
-                    />
-                    <p>{this.state.account}</p>
-                    <FormControl.Feedback />
+            <form onSubmit={this.handleSubmit}>
+                <FormGroup controlId="formBasicText">
+                    <FormGroup>
+                        <ControlLabel>Want to invest more?</ControlLabel>
+                        <InputGroup>
+                            <FormControl
+                                type="text"
+                                value={this.state.value}
+                                placeholder="enter amount"
+                                onChange={this.handleChange}
+                            />
+                            <InputGroup.Button disabled>
+                                <Button>wei</Button>
+                            </InputGroup.Button>
+                        </InputGroup>
+                    </FormGroup>
+                    <Button bsStyle="primary" block type="submit" disabled={isLoading}>
+                        Invest!
+                    </Button>
                 </FormGroup>
             </form>
         )

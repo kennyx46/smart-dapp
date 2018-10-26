@@ -1,54 +1,80 @@
 import web3 from "./web3";
 
-const address = ""
+// const addressDev = "0xc3a5d191012ea8708972812b9f3eefc59c49fef5"
+// const address = "0xa856b500909662730114739533c858604fef57e8"
+
+const address = process.env.REACT_APP_CROWDSALE_CONTRACT_ADDRESS
 
 const abi = [
     {
-        "anonymous": false,
-        "inputs": [
+        "constant": true,
+        "inputs": [],
+        "name": "rate",
+        "outputs": [
             {
-                "indexed": true,
-                "name": "purchaser",
-                "type": "address"
-            },
-            {
-                "indexed": true,
-                "name": "beneficiary",
-                "type": "address"
-            },
-            {
-                "indexed": false,
-                "name": "value",
-                "type": "uint256"
-            },
-            {
-                "indexed": false,
-                "name": "amount",
+                "name": "",
                 "type": "uint256"
             }
         ],
-        "name": "TokensPurchased",
-        "type": "event"
-    },
-    {
-        "constant": false,
-        "inputs": [
-            {
-                "name": "beneficiary",
-                "type": "address"
-            }
-        ],
-        "name": "claimRefund",
-        "outputs": [],
         "payable": false,
-        "stateMutability": "nonpayable",
+        "stateMutability": "view",
         "type": "function"
     },
     {
-        "anonymous": false,
+        "constant": true,
         "inputs": [],
-        "name": "CrowdsaleFinalized",
-        "type": "event"
+        "name": "cap",
+        "outputs": [
+            {
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "payable": false,
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "constant": true,
+        "inputs": [],
+        "name": "weiRaised",
+        "outputs": [
+            {
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "payable": false,
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "constant": true,
+        "inputs": [],
+        "name": "capReached",
+        "outputs": [
+            {
+                "name": "",
+                "type": "bool"
+            }
+        ],
+        "payable": false,
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "constant": true,
+        "inputs": [],
+        "name": "wallet",
+        "outputs": [
+            {
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "payable": false,
+        "stateMutability": "view",
+        "type": "function"
     },
     {
         "constant": false,
@@ -65,18 +91,18 @@ const abi = [
         "type": "function"
     },
     {
-        "constant": false,
+        "constant": true,
         "inputs": [],
-        "name": "finalize",
-        "outputs": [],
+        "name": "token",
+        "outputs": [
+            {
+                "name": "",
+                "type": "address"
+            }
+        ],
         "payable": false,
-        "stateMutability": "nonpayable",
+        "stateMutability": "view",
         "type": "function"
-    },
-    {
-        "payable": true,
-        "stateMutability": "payable",
-        "type": "fallback"
     },
     {
         "inputs": [
@@ -114,189 +140,39 @@ const abi = [
         "type": "constructor"
     },
     {
-        "constant": true,
-        "inputs": [],
-        "name": "cap",
-        "outputs": [
-            {
-                "name": "",
-                "type": "uint256"
-            }
-        ],
-        "payable": false,
-        "stateMutability": "view",
-        "type": "function"
+        "payable": true,
+        "stateMutability": "payable",
+        "type": "fallback"
     },
     {
-        "constant": true,
-        "inputs": [],
-        "name": "capReached",
-        "outputs": [
+        "anonymous": false,
+        "inputs": [
             {
-                "name": "",
-                "type": "bool"
-            }
-        ],
-        "payable": false,
-        "stateMutability": "view",
-        "type": "function"
-    },
-    {
-        "constant": true,
-        "inputs": [],
-        "name": "closingTime",
-        "outputs": [
-            {
-                "name": "",
-                "type": "uint256"
-            }
-        ],
-        "payable": false,
-        "stateMutability": "view",
-        "type": "function"
-    },
-    {
-        "constant": true,
-        "inputs": [],
-        "name": "finalized",
-        "outputs": [
-            {
-                "name": "",
-                "type": "bool"
-            }
-        ],
-        "payable": false,
-        "stateMutability": "view",
-        "type": "function"
-    },
-    {
-        "constant": true,
-        "inputs": [],
-        "name": "goal",
-        "outputs": [
-            {
-                "name": "",
-                "type": "uint256"
-            }
-        ],
-        "payable": false,
-        "stateMutability": "view",
-        "type": "function"
-    },
-    {
-        "constant": true,
-        "inputs": [],
-        "name": "goalReached",
-        "outputs": [
-            {
-                "name": "",
-                "type": "bool"
-            }
-        ],
-        "payable": false,
-        "stateMutability": "view",
-        "type": "function"
-    },
-    {
-        "constant": true,
-        "inputs": [],
-        "name": "hasClosed",
-        "outputs": [
-            {
-                "name": "",
-                "type": "bool"
-            }
-        ],
-        "payable": false,
-        "stateMutability": "view",
-        "type": "function"
-    },
-    {
-        "constant": true,
-        "inputs": [],
-        "name": "isOpen",
-        "outputs": [
-            {
-                "name": "",
-                "type": "bool"
-            }
-        ],
-        "payable": false,
-        "stateMutability": "view",
-        "type": "function"
-    },
-    {
-        "constant": true,
-        "inputs": [],
-        "name": "openingTime",
-        "outputs": [
-            {
-                "name": "",
-                "type": "uint256"
-            }
-        ],
-        "payable": false,
-        "stateMutability": "view",
-        "type": "function"
-    },
-    {
-        "constant": true,
-        "inputs": [],
-        "name": "rate",
-        "outputs": [
-            {
-                "name": "",
-                "type": "uint256"
-            }
-        ],
-        "payable": false,
-        "stateMutability": "view",
-        "type": "function"
-    },
-    {
-        "constant": true,
-        "inputs": [],
-        "name": "token",
-        "outputs": [
-            {
-                "name": "",
+                "indexed": true,
+                "name": "purchaser",
                 "type": "address"
-            }
-        ],
-        "payable": false,
-        "stateMutability": "view",
-        "type": "function"
-    },
-    {
-        "constant": true,
-        "inputs": [],
-        "name": "wallet",
-        "outputs": [
+            },
             {
-                "name": "",
+                "indexed": true,
+                "name": "beneficiary",
                 "type": "address"
-            }
-        ],
-        "payable": false,
-        "stateMutability": "view",
-        "type": "function"
-    },
-    {
-        "constant": true,
-        "inputs": [],
-        "name": "weiRaised",
-        "outputs": [
+            },
             {
-                "name": "",
+                "indexed": false,
+                "name": "value",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "name": "amount",
                 "type": "uint256"
             }
         ],
-        "payable": false,
-        "stateMutability": "view",
-        "type": "function"
+        "name": "TokensPurchased",
+        "type": "event"
     }
 ]
 
-const contract = web3.eth.Contract(abi, address)
+const contract = new web3.eth.Contract(abi, address)
 
 export default contract
