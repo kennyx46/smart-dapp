@@ -5,3 +5,5 @@ App is bootstrapped using create-react-app [https://github.com/facebook/create-r
 Note: For proper app functioning you need to have metamask chrome extension installed.
 
 To run the app locally, please run `yarn` and then `yarn start`.
+
+You can also use `docker` to run the app.
