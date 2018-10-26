@@ -4,14 +4,14 @@ App is bootstrapped using create-react-app. You can use app for checking your me
 
 Note: For proper app functioning you need to have metamask chrome extension installed.
 
-To run the app locally, please run 'yarn' and then 'yarn start'
+To run the app locally, please run `yarn` and then `yarn start`
 
 
 
 
 
 
-
+Generated readme:
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
